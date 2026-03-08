@@ -60,7 +60,8 @@ std::string AmcrestStream::buildUrl() const {
     }
     codes += "%5D";
     return "http://" + config_.host +
-           "/cgi-bin/eventManager.cgi?action=attach&codes=" + codes;
+           "/cgi-bin/eventManager.cgi?action=attach&codes=" + codes +
+           "&heartbeat=5";
 }
 
 size_t AmcrestStream::writeCallback(char* ptr, size_t size, size_t nmemb, void* userdata) {
@@ -87,6 +88,9 @@ size_t AmcrestStream::writeCallback(char* ptr, size_t size, size_t nmemb, void* 
 
         if (!line.empty() && line.back() == '\r') line.pop_back();
         if (line.empty()) continue;
+
+        // Skip heartbeat keepalives
+        if (line == "Heartbeat") continue;
 
         // Log event lines; skip MIME boundaries and headers
         if (line.find("Code=") != std::string::npos) {

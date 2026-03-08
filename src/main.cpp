@@ -27,7 +27,7 @@ void signalHandler(int signal) {
 
 int main(int argc, char* argv[]) {
     std::cout << "========================================" << std::endl;
-    std::cout << "  HMS-NVR v1.0.0" << std::endl;
+    std::cout << "  HMS-NVR v1.1.0" << std::endl;
     std::cout << "  Amcrest Event Stream -> MQTT" << std::endl;
     std::cout << "========================================" << std::endl;
 

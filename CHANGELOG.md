@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-03-08
+
+### Fixed
+- Add `&heartbeat=5` to event stream URL — cameras send keepalives every 5s, preventing false 120s timeout disconnects during quiet periods
+- Filter heartbeat lines in stream parser to avoid log noise
+- Enable `MessageEnable=true` on cameras that had it disabled (required for HTTP event stream to receive events)
+
 ## [1.0.0] - 2026-03-08
 
 ### Added
