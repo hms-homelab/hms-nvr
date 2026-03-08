@@ -1,0 +1,29 @@
+# Build
+build/
+cmake-build-*/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+drogon.*.log
+
+# Uploads
+uploads/
+
+# Config with credentials
+config/hms-nvr.yaml
+
+# Secrets
+.env
+*.pem
+*.key
+
+# OS
+.DS_Store
+Thumbs.db

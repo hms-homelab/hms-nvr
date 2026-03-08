@@ -1,0 +1,45 @@
+# HMS-NVR Configuration
+# Amcrest camera event stream monitor → MQTT
+
+server:
+  port: 8898
+  threads: 2
+
+mqtt:
+  broker: "192.168.2.15"
+  port: 1883
+  username: "your_mqtt_user"
+  password: "your_mqtt_password"
+  client_id: "hms_nvr"
+
+cameras:
+  - id: "front_door"
+    name: "Front Door"
+    host: "192.168.2.43"
+    username: "admin"
+    password: "your_camera_password"
+    model: "Amcrest AD410"
+    events:
+      - VideoMotion
+      - PhoneCallDetect
+    enabled: true
+
+  - id: "patio"
+    name: "Patio"
+    host: "192.168.2.59"
+    username: "admin"
+    password: "your_camera_password"
+    model: "Amcrest IP4M-1041"
+    events:
+      - VideoMotion
+    enabled: true
+
+# Event stream settings
+event_stream:
+  reconnect_delay: 5
+  connect_timeout: 10
+  heartbeat_interval: 30
+  publish_motion_stop: false
+
+logging:
+  level: "info"

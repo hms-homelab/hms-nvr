@@ -1,0 +1,19 @@
+[Unit]
+Description=HMS-NVR - Amcrest Camera Event Stream Monitor
+After=network.target emqx.service
+Wants=emqx.service
+
+[Service]
+Type=simple
+User=aamat
+Group=aamat
+WorkingDirectory=/home/aamat/maestro_hub/projects/hms-nvr
+ExecStart=/usr/local/bin/hms_nvr --config /etc/hms-nvr/hms-nvr.yaml
+Restart=always
+RestartSec=5
+TimeoutStopSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
