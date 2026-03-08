@@ -37,15 +37,16 @@ RUN mkdir build && cd build && \
 # =============================================================================
 FROM debian:trixie-slim
 
-# Install runtime dependencies
+# Install runtime dependencies (use -dev to auto-pull correct versioned runtime libs)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
-    libcurl4t64 \
-    libjsoncpp25 \
-    libyaml-cpp0.8 \
-    libpaho-mqtt1.3 \
-    libpaho-mqttpp3-1 \
+    libcurl4-openssl-dev \
+    libjsoncpp-dev \
+    libyaml-cpp-dev \
+    libpaho-mqttpp-dev \
+    libpaho-mqtt-dev \
+    libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user
