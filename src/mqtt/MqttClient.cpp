@@ -71,17 +71,23 @@ bool MqttClient::isConnected() const {
 
 bool MqttClient::publish(const std::string& topic, const std::string& payload,
                           int qos, bool retain) {
-    if (!isConnected()) {
-        std::cerr << "[MQTT] Not connected, cannot publish" << std::endl;
-        return false;
+    {
+        std::lock_guard<std::recursive_mutex> lock(connection_mutex_);
+        if (!connected_ || !client_ || !client_->is_connected()) {
+            std::cerr << "[MQTT] Not connected, cannot publish" << std::endl;
+            return false;
+        }
     }
     try {
         auto msg = mqtt::make_message(topic, payload);
         msg->set_qos(qos);
         msg->set_retained(retain);
-        {
-            std::lock_guard<std::recursive_mutex> lock(connection_mutex_);
-            client_->publish(msg);
+        auto tok = client_->publish(msg);
+        if (qos > 0) {
+            if (!tok->wait_for(std::chrono::seconds(5))) {
+                std::cerr << "[MQTT] Publish timed out on topic: " << topic << std::endl;
+                return false;
+            }
         }
         return true;
     } catch (const mqtt::exception& e) {
