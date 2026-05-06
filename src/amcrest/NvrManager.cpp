@@ -44,7 +44,8 @@ NvrManager::~NvrManager() {
 }
 
 void NvrManager::start() {
-    mqtt_->publish("hms_nvr/status", "online", 1, true);
+    // QoS 0: status is best-effort, not worth blocking stream startup for ack
+    mqtt_->publish("hms_nvr/status", "online", 0, true);
 
     for (auto& stream : streams_) {
         stream->start([this](const CameraEvent& event) {
@@ -61,7 +62,7 @@ void NvrManager::stop() {
     }
 
     if (mqtt_ && mqtt_->isConnected()) {
-        mqtt_->publish("hms_nvr/status", "offline", 1, true);
+        mqtt_->publish("hms_nvr/status", "offline", 0, true);
     }
 
     std::cout << "[NVR] All streams stopped" << std::endl;

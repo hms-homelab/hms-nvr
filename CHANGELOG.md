@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2026-05-06
+
+### Fixed
+- MQTT publish deadlock on startup: `client_->publish()` with QoS 1 could block indefinitely when EMQX dropped the connection between `connect()` and `NvrManager::start()`, leaving paho's internal reconnect loop holding a mutex. Status publishes (`hms_nvr/status`) downgraded to QoS 0 (fire-and-forget); all QoS > 0 publishes now use `wait_for(5s)` to guarantee they cannot block forever.
+
 ## [1.1.0] - 2026-03-08
 
 ### Fixed
